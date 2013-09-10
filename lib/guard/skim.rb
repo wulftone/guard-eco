@@ -4,14 +4,14 @@ require 'guard/watcher'
 
 module Guard
 
-  # The Eco guard that gets notifications about the following
+  # The Skim guard that gets notifications about the following
   # Guard events: `start`, `stop`, `reload`, `run_all` and `run_on_change`.
   #
-  class Eco < Guard
+  class Skim < Guard
 
-    autoload :Formatter, 'guard/eco/formatter'
-    autoload :Inspector, 'guard/eco/inspector'
-    autoload :Runner, 'guard/eco/runner'
+    autoload :Formatter, 'guard/skim/formatter'
+    autoload :Inspector, 'guard/skim/inspector'
+    autoload :Runner, 'guard/skim/runner'
 
     DEFAULT_OPTIONS = {
         :bare         => false,
@@ -21,7 +21,7 @@ module Guard
         :all_on_start => false
     }
 
-    # Initialize Guard::Eco.
+    # Initialize Guard::Skim.
     #
     # @param [Array<Guard::Watcher>] watchers the watchers in the Guard block
     # @param [Hash] options the options for the Guard
@@ -39,7 +39,7 @@ module Guard
 
       if options[:input]
         defaults.merge!({ :output => options[:input] })
-        watchers << ::Guard::Watcher.new(%r{^#{ options.delete(:input) }/(.+\.eco)$})
+        watchers << ::Guard::Watcher.new(%r{^#{ options.delete(:input) }/(.+\.skim)$})
       end
 
       super(watchers, defaults.merge(options))
@@ -58,7 +58,7 @@ module Guard
     # @raise [:task_has_failed] when stop has failed
     #
     def run_all
-      run_on_change(Watcher.match_files(self, Dir.glob(File.join('**', '*.eco'))))
+      run_on_change(Watcher.match_files(self, Dir.glob(File.join('**', '*.skim'))))
     end
 
     # Gets called when watched paths and files have changes.
@@ -80,7 +80,7 @@ module Guard
     #
     def run_on_deletion(paths)
       Inspector.clean(paths).each do |file|
-        javascript = file.gsub(/(js\.eco|eco)$/, 'js')
+        javascript = file.gsub(/(jst\.skim|skim)$/, 'js')
         File.remove(javascript) if File.exists?(javascript)
       end
     end

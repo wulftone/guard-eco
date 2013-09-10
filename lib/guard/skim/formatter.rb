@@ -1,7 +1,7 @@
 module Guard
-  class Eco
+  class Skim
 
-    # The Guard::Eco formatter collects console and
+    # The Guard::Skim formatter collects console and
     # system notification methods and enhances them with
     # some color information.
     #

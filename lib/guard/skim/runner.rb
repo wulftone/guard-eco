@@ -1,11 +1,11 @@
-require 'eco'
+require 'skim'
 
 module Guard
-  class Eco
+  class Skim
     module Runner
       class << self
 
-        # The Eco runner handles the Eco compilation,
+        # The Skim runner handles the Skim compilation,
         # creates nested directories and the output file, writes the result
         # to the console and triggers optional system notifications.
         #
@@ -44,7 +44,7 @@ module Guard
           Formatter.info(message, :reset => true)
         end
 
-        # Compiles all Eco files and writes the JavaScript files.
+        # Compiles all Skim files and writes the JavaScript files.
         #
         # @param [Array<String>] files the files to compile
         # @param [Array<Guard::Watcher>] watchers the Guard watchers in the block
@@ -72,19 +72,19 @@ module Guard
           [changed_files.compact, errors]
         end
 
-        # Compile the Eco
+        # Compile the Skim
         #
-        # @param [String] file the Eco file
+        # @param [String] file the Skim file
         # @param [Hash] options the options for the execution
         #
         def compile(file, options)
           file_options = options_for_file(file, options)
-          ::Eco.compile(File.read(file))
+          ::Skim.compile(File.read(file))
         end
 
-        # Gets the Eco compilation options.
+        # Gets the Skim compilation options.
         #
-        # @param [String] file the Eco file
+        # @param [String] file the Skim file
         # @param [Hash] options the options for the execution
         # @option options [Boolean] :bare do not wrap the output in a top level function
         #
@@ -92,24 +92,24 @@ module Guard
           return options unless options[:bare].respond_to? :include?
 
           file_options        = options.clone
-          filename            = file[/([^\/]*)\.eco/]
+          filename            = file[/([^\/]*)\.skim/]
           file_options[:bare] = file_options[:bare].include?(filename)
 
           file_options
         end
 
-        # Analyzes the Eco compilation output and creates the
+        # Analyzes the Skim compilation output and creates the
         # nested directories and writes the output file.
         #
         # @param [String] content the JavaScript content
-        # @param [String] file the Eco file name
+        # @param [String] file the Skim file name
         # @param [String] directory the output directory
         # @param [Hash] options the options for the execution
         # @option options [Boolean] :noop do not generate an output file
         #
         def write_javascript_file(content, file, directory, options)
           FileUtils.mkdir_p(File.expand_path(directory)) if !File.directory?(directory) && !options[:noop]
-          template_name = File.join(directory, File.basename(file.gsub(/\.(js\.eco|eco)$/, '')))
+          template_name = File.join(directory, File.basename(file.gsub(/\.(jst\.skim|skim)$/, '')))
           filename = "#{template_name}.js"
           content = "window.JST['#{template_name}'] = #{content}"
           File.open(File.expand_path(filename), 'w') { |f| f.write(content) } if !options[:noop]
@@ -117,12 +117,12 @@ module Guard
           filename
         end
 
-        # Detects the output directory for each Eco file. Builds
+        # Detects the output directory for each Skim file. Builds
         # the product of all watchers and assigns to each directory
         # the files to which it belongs to.
         #
         # @param [Array<Guard::Watcher>] watchers the Guard watchers in the block
-        # @param [Array<String>] files the Eco files
+        # @param [Array<String>] files the Skim files
         # @param [Hash] options the options for the execution
         # @option options [String] :output the output directory
         # @option options [Boolean] :shallow do not create nested directories
@@ -156,11 +156,11 @@ module Guard
         #
         def notify_result(changed_files, errors, options = { })
           if !errors.empty?
-            Formatter.notify(errors.join("\n"), :title => 'Eco results', :image => :failed, :priority => 2)
+            Formatter.notify(errors.join("\n"), :title => 'Skim results', :image => :failed, :priority => 2)
           elsif !options[:hide_success]
             message = "Successfully #{ options[:noop] ? 'verified' : 'generated' } #{ changed_files.join(', ') }"
             Formatter.success(message)
-            Formatter.notify(message, :title => 'Eco results')
+            Formatter.notify(message, :title => 'Skim results')
           end
         end
 

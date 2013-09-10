@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-# Specify your gem's dependencies in guard-eco.gemspec
+# Specify your gem's dependencies in guard-skim.gemspec
 gemspec
 
 gem 'rake'

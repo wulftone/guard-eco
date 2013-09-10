@@ -1,1 +1,0 @@
-guard 'eco', :input => 'app/assets/templates'
