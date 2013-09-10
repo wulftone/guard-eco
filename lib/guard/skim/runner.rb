@@ -79,7 +79,7 @@ module Guard
         #
         def compile(file, options)
           file_options = options_for_file(file, options)
-          ::Skim.compile(File.read(file))
+          ::Skim::Template.new(File.read(file)).render
         end
 
         # Gets the Skim compilation options.
