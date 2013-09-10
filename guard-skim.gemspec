@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = 'guard-skim'
 
   s.add_dependency 'guard', '>= 0.8.3'
-  s.add_dependency 'skim', '>= 1.0.0'
+  s.add_dependency 'skim'
 
   s.add_development_dependency 'bundler',     '~> 1.0'
   s.add_development_dependency 'guard-rspec', '~> 0.5'
